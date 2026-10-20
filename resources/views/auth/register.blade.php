@@ -1,35 +1,36 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="utf-8">
-    <title>Daftar Pemohon</title>
-</head>
-<body>
-    <h1>Daftar Pemohon</h1>
+@extends('layouts.guest')
 
-    @if ($errors->any())
-        <ul style="color:red">
-            @foreach ($errors->all() as $pesan)
-                <li>{{ $pesan }}</li>
-            @endforeach
-        </ul>
-    @endif
+@section('title', 'Daftar')
+
+@section('content')
+    <h5 class="mb-3">Daftar Pemohon</h5>
 
     <form method="POST" action="{{ route('register.proses') }}">
         @csrf
-        <p><label>Nama</label><br>
-            <input type="text" name="nama" value="{{ old('nama') }}"></p>
-        <p><label>Telepon</label><br>
-            <input type="text" name="telepon" value="{{ old('telepon') }}"></p>
-        <p><label>Email</label><br>
-            <input type="email" name="email" value="{{ old('email') }}"></p>
-        <p><label>Password</label><br>
-            <input type="password" name="password"></p>
-        <p><label>Ulangi Password</label><br>
-            <input type="password" name="password_confirmation"></p>
-        <button type="submit">Daftar</button>
+        <div class="mb-3">
+            <label class="form-label">Nama</label>
+            <input type="text" name="nama" class="form-control" value="{{ old('nama') }}">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Telepon</label>
+            <input type="text" name="telepon" class="form-control" value="{{ old('telepon') }}">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" name="email" class="form-control" value="{{ old('email') }}">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input type="password" name="password" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Ulangi Password</label>
+            <input type="password" name="password_confirmation" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Daftar</button>
     </form>
 
-    <p>Sudah punya akun? <a href="{{ route('login') }}">Login</a></p>
-</body>
-</html>
+    <p class="text-center mt-3 mb-0">
+        Sudah punya akun? <a href="{{ route('login') }}">Login</a>
+    </p>
+@endsection

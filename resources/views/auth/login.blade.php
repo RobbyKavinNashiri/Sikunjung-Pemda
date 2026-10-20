@@ -1,30 +1,24 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="utf-8">
-    <title>Login</title>
-</head>
-<body>
-    <h1>Login</h1>
+@extends('layouts.guest')
 
-    @if (session('sukses')) <p style="color:green">{{ session('sukses') }}</p> @endif
-    @if (session('error')) <p style="color:red">{{ session('error') }}</p> @endif
-    @error('login') <p style="color:red">{{ $message }}</p> @enderror
-    @error('password') <p style="color:red">{{ $message }}</p> @enderror
+@section('title', 'Login')
+
+@section('content')
+    <h5 class="mb-3">Masuk</h5>
 
     <form method="POST" action="{{ route('login.proses') }}">
         @csrf
-        <p>
-            <label>Username / Email</label><br>
-            <input type="text" name="login" value="{{ old('login') }}">
-        </p>
-        <p>
-            <label>Password</label><br>
-            <input type="password" name="password">
-        </p>
-        <button type="submit">Masuk</button>
+        <div class="mb-3">
+            <label class="form-label">Username / Email</label>
+            <input type="text" name="login" class="form-control" value="{{ old('login') }}" autofocus>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input type="password" name="password" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Masuk</button>
     </form>
 
-    <p>Belum punya akun? <a href="{{ route('register') }}">Daftar sebagai pemohon</a></p>
-</body>
-</html>
+    <p class="text-center mt-3 mb-0">
+        Belum punya akun? <a href="{{ route('register') }}">Daftar sebagai pemohon</a>
+    </p>
+@endsection

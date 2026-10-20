@@ -4,7 +4,7 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 // Sementara: halaman awal diarahkan ke login
-Route::get('/', fn () => redirect()->route('login'));
+Route::get('/', fn () => view('beranda'))->name('beranda');
 
 // Login, daftar, logout
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
