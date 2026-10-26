@@ -1,9 +1,12 @@
 <?php
 
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\PendudukController;
+use App\Http\Controllers\Admin\JabatanController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
-// Sementara: halaman awal diarahkan ke login
+// Halaman awal
 Route::get('/', fn () => view('beranda'))->name('beranda');
 
 // Login, daftar, logout
@@ -15,7 +18,10 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Area Admin
 Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', fn () => view('sementara', ['judul' => 'Dashboard Admin']))->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::resource('jabatan', JabatanController::class)->except('show');
+    Route::resource('penduduk', PendudukController::class)->except('show');
+
 });
 
 // Area Penduduk

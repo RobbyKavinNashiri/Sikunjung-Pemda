@@ -26,7 +26,9 @@
 
                 @if ($penduduk && $penduduk->status === 'Admin')
                     <li class="nav-item"><a class="nav-link" href="{{ route('admin.dashboard') }}">Dashboard Admin</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('admin.jabatan.index') }}">Jabatan</a></li>
                 @elseif ($penduduk)
+                <li class="nav-item"><a class="nav-link" href="{{ route('admin.penduduk.index') }}">Penduduk</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('penduduk.dashboard') }}">Dashboard</a></li>
                 @elseif ($pemohon)
                     <li class="nav-item"><a class="nav-link" href="{{ route('pemohon.dashboard') }}">Dashboard</a></li>
