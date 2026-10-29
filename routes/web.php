@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\PendudukController;
 use App\Http\Controllers\Admin\JabatanController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\JabatanPendudukController;
 
 // Halaman awal
 Route::get('/', fn () => view('beranda'))->name('beranda');
@@ -21,7 +22,9 @@ Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(function
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('jabatan', JabatanController::class)->except('show');
     Route::resource('penduduk', PendudukController::class)->except('show');
-
+    Route::resource('jabatan-penduduk', JabatanPendudukController::class)
+    ->except('show')
+    ->parameters(['jabatan-penduduk' => 'jabatanPenduduk']);
 });
 
 // Area Penduduk

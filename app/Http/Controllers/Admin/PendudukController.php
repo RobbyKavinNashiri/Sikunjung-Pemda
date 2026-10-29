@@ -94,7 +94,7 @@ class PendudukController extends Controller
             ->with('sukses', 'Data penduduk berhasil dihapus.');
     }
 
-    private function aturan(?Penduduk $penduduk = null): array
+       private function aturan(?Penduduk $penduduk = null): array
     {
         $id = $penduduk?->id_penduduk;
         $adaPassword = $penduduk ? 'nullable' : 'required';
