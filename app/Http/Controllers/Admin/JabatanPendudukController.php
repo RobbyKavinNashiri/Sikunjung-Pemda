@@ -81,7 +81,7 @@ class JabatanPendudukController extends Controller
             'id_penduduk' => [
                 'required',
                 Rule::exists('penduduk', 'id_penduduk'),
-                // satu orang tidak boleh punya jabatan yang sama dua kali
+                // satu orang tidak boleh memegang jabatan yang sama dua kali
                 Rule::unique('jabatan_penduduk', 'id_penduduk')
                     ->where(fn ($q) => $q->where('id_jabatan', $request->input('id_jabatan')))
                     ->ignore($jp?->id_jabatan_penduduk, 'id_jabatan_penduduk'),

@@ -23,16 +23,19 @@
         <div class="collapse navbar-collapse" id="menuUtama">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item"><a class="nav-link" href="{{ url('/') }}">Beranda</a></li>
-@if ($penduduk && $penduduk->status === 'Admin')
-    <li class="nav-item"><a class="nav-link" href="{{ route('admin.dashboard') }}">Dashboard Admin</a></li>
-    <li class="nav-item"><a class="nav-link" href="{{ route('admin.jabatan.index') }}">Jabatan</a></li>
-    <li class="nav-item"><a class="nav-link" href="{{ route('admin.penduduk.index') }}">Penduduk</a></li>
-@elseif ($penduduk)
-    <li class="nav-item"><a class="nav-link" href="{{ route('penduduk.dashboard') }}">Dashboard</a></li>
-    <li class="nav-item"><a class="nav-link" href="{{ route('admin.jabatan-penduduk.index') }}">Jabatan Pegawai</a></li>
-@elseif ($pemohon)
-    <li class="nav-item"><a class="nav-link" href="{{ route('pemohon.dashboard') }}">Dashboard</a></li>
-@endif
+
+                @if ($penduduk && $penduduk->status === 'Admin')
+                    <li class="nav-item"><a class="nav-link" href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('admin.jabatan.index') }}">Jabatan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('admin.penduduk.index') }}">Penduduk</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('admin.jabatan-penduduk.index') }}">Jabatan Pegawai</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('admin.settings-kunjungan.index') }}">Jadwal Kunjungan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('admin.settings-kegiatan.index') }}">Kegiatan</a></li>
+                @elseif ($penduduk)
+                    <li class="nav-item"><a class="nav-link" href="{{ route('penduduk.dashboard') }}">Dashboard</a></li>
+                @elseif ($pemohon)
+                    <li class="nav-item"><a class="nav-link" href="{{ route('pemohon.dashboard') }}">Dashboard</a></li>
+                @endif
             </ul>
 
             <ul class="navbar-nav">

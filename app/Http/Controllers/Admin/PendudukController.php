@@ -36,10 +36,7 @@ class PendudukController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->validate(
-            $this->aturan(),
-            $this->pesan()
-        );
+        $data = $request->validate($this->aturan(), $this->pesan());
 
         Penduduk::create($data);
 
@@ -54,13 +51,10 @@ class PendudukController extends Controller
 
     public function update(Request $request, Penduduk $penduduk)
     {
-        $data = $request->validate(
-            $this->aturan($penduduk),
-            $this->pesan()
-        );
+        $data = $request->validate($this->aturan($penduduk), $this->pesan());
 
         // Admin tidak boleh menurunkan statusnya sendiri
-        if ($penduduk->id_penduduk === Auth::guard('penduduk')->id() && $data['status'] !== 'Admin') {
+        if ((int) $penduduk->id_penduduk === (int) Auth::guard('penduduk')->id() && $data['status'] !== 'Admin') {
             return back()->withInput()
                 ->with('error', 'Anda tidak bisa mengubah status akun Anda sendiri.');
         }
@@ -78,7 +72,7 @@ class PendudukController extends Controller
 
     public function destroy(Penduduk $penduduk)
     {
-        if ($penduduk->id_penduduk === Auth::guard('penduduk')->id()) {
+        if ((int) $penduduk->id_penduduk === (int) Auth::guard('penduduk')->id()) {
             return redirect()->route('admin.penduduk.index')
                 ->with('error', 'Anda tidak bisa menghapus akun Anda sendiri.');
         }
@@ -94,7 +88,7 @@ class PendudukController extends Controller
             ->with('sukses', 'Data penduduk berhasil dihapus.');
     }
 
-       private function aturan(?Penduduk $penduduk = null): array
+    private function aturan(?Penduduk $penduduk = null): array
     {
         $id = $penduduk?->id_penduduk;
         $adaPassword = $penduduk ? 'nullable' : 'required';
