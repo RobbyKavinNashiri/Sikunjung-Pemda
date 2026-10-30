@@ -29,6 +29,7 @@
                     <li class="nav-item"><a class="nav-link" href="{{ route('admin.jabatan.index') }}">Jabatan</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('admin.penduduk.index') }}">Penduduk</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('admin.jabatan-penduduk.index') }}">Jabatan Pegawai</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('admin.kunjungan.index') }}">Pengajuan</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('admin.settings-kunjungan.index') }}">Jadwal Kunjungan</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('admin.settings-kegiatan.index') }}">Kegiatan</a></li>
                 @elseif ($penduduk)

@@ -29,8 +29,22 @@ class Kunjungan extends Model
         return $this->belongsTo(SettingsKunjungan::class, 'id_settings_kunjungan', 'id_settings_kunjungan');
     }
 
-    public function pemohon()
+        public function pemohon()
     {
         return $this->belongsTo(Pemohon::class, 'id_pemohon', 'id_pemohon');
+    }
+
+    // Status gabungan: dipakai di daftar dan detail
+    public function getStatusAttribute(): string
+    {
+        if ($this->konfrimasi_admin === 'T' || $this->konfrimasi_penduduk === 'T') {
+            return 'ditolak';
+        }
+
+        if ($this->konfrimasi_admin === 'Y' && $this->konfrimasi_penduduk === 'Y') {
+            return 'disetujui';
+        }
+
+        return 'menunggu';
     }
 }

@@ -8,7 +8,7 @@ use App\Http\Controllers\Admin\SettingsKegiatanController;
 use App\Http\Controllers\Admin\SettingsKunjunganController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Admin\KunjunganController;
 // Halaman awal
 Route::get('/', fn () => view('beranda'))->name('beranda');
 
@@ -22,7 +22,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // Area Admin
 Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
+    Route::resource('kunjungan', KunjunganController::class)->only(['index', 'show', 'update']);
     Route::resource('jabatan', JabatanController::class)->except('show');
     Route::resource('penduduk', PendudukController::class)->except('show');
 
