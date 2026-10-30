@@ -39,12 +39,13 @@ Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(function
         ->parameters(['settings-kegiatan' => 'settingsKegiatan']);
 });
 
-// Area Penduduk
+   // Area Penduduk
+   
 Route::middleware('role:penduduk')->prefix('penduduk')->name('penduduk.')->group(function () {
-    Route::get('/dashboard', [App\Http\Controllers\Penduduk\KegiatanController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [App\Http\Controllers\Penduduk\KunjunganController::class, 'index'])->name('dashboard');
+    Route::resource('kunjungan', App\Http\Controllers\Penduduk\KunjunganController::class)->only(['index', 'show', 'update']);
     Route::resource('kegiatan', App\Http\Controllers\Penduduk\KegiatanController::class);
 });
-
 // Area Pemohon
 // Area Pemohon
 // Area Pemohon

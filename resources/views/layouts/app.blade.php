@@ -34,6 +34,7 @@
                     <li class="nav-item"><a class="nav-link" href="{{ route('admin.settings-kegiatan.index') }}">Kegiatan</a></li>
                 @elseif ($penduduk)
                     <li class="nav-item"><a class="nav-link" href="{{ route('penduduk.dashboard') }}">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('penduduk.kunjungan.index') }}">Pengajuan</a></li>
                 @elseif ($pemohon)
                     <li class="nav-item"><a class="nav-link" href="{{ route('pemohon.dashboard') }}">Dashboard</a></li>
                 @endif
