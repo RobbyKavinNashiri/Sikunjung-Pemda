@@ -24,11 +24,12 @@ class AuthController extends Controller
         ]);
 
         // 1) Coba sebagai admin/penduduk (pakai username)
-        if (Auth::guard('penduduk')->attempt([
-            'username' => $data['login'],
-            'password' => $data['password'],
-        ])) {
-            $request->session()->regenerate();
+         if (Auth::guard('penduduk')->attempt([
+               'username' => $data['login'],
+               'password' => $data['password'],
+           ])) {
+               Auth::guard('pemohon')->logout(); // keluarkan sesi pemohon yang tertinggal
+               $request->session()->regenerate();
 
             $status = Auth::guard('penduduk')->user()->status;
 
@@ -36,11 +37,12 @@ class AuthController extends Controller
         }
 
         // 2) Coba sebagai pemohon (pakai email)
-        if (Auth::guard('pemohon')->attempt([
-            'email' => $data['login'],
-            'password' => $data['password'],
-        ])) {
-            $request->session()->regenerate();
+            if (Auth::guard('pemohon')->attempt([
+               'email' => $data['login'],
+               'password' => $data['password'],
+           ])) {
+               Auth::guard('penduduk')->logout(); // keluarkan sesi penduduk yang tertinggal
+               $request->session()->regenerate();
 
             return redirect()->route('pemohon.dashboard');
         }

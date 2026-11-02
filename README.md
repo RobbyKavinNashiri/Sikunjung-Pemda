@@ -1,58 +1,79 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# SI Kunjung Pemda
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplikasi layanan kunjungan instansi pemerintahan. Pemohon mengajukan kunjungan secara daring kepada pejabat tujuan.
+Admin dan pejabat memproses pengajuan tersebut. Dibangun dengan **Laravel 13**, **MariaDB/MySQL**, dan **Bootstrap 5**.
 
-## About Laravel
+## Peran pengguna
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+| Peran | Login | Kemampuan |
+|---|---|---|
+| Publik (tanpa login) | - | Melihat jadwal kunjungan yang dibuka (dengan pencarian dan filter) dan struktur jabatan |
+| Pemohon | email + password | Daftar, mengajukan kunjungan, melihat riwayat, mengubah atau menghapus pengajuan selama belum diproses |
+| Pejabat (Penduduk) | username + password | Menyetujui atau menolak pengajuan yang ditujukan kepadanya (dengan catatan), melihat jadwal sendiri, mengelola kegiatan sendiri |
+| Admin | username + password | Mengelola jabatan, penduduk, jabatan pegawai, jadwal kunjungan, kegiatan, dan memproses semua pengajuan |
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Alur pengajuan
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+1. Admin membuat **jadwal kunjungan** untuk seorang pejabat (tanggal, jam mulai, jam selesai).
+2. Pemohon memilih jadwal tersebut dan mengisi tujuan kunjungan.
+3. **Admin** dan **pejabat tujuan** masing-masing memutuskan Setujui atau Tolak. Menolak wajib disertai catatan.
+4. Status pengajuan:
+   - **Ditolak** bila salah satu pihak menolak.
+   - **Disetujui** bila admin dan pejabat sama-sama menyetujui.
+   - **Menunggu** untuk keadaan lainnya.
+5. Pemohon hanya dapat mengubah atau menghapus pengajuan yang belum diputuskan siapa pun.
 
-## Learning Laravel
+## Keamanan yang diterapkan
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- Password disimpan terenkripsi (bcrypt), tidak pernah berupa teks biasa.
+- Dua *guard* login terpisah: `penduduk` (admin dan pejabat) dan `pemohon`.
+- Middleware `role` membatasi akses halaman sesuai peran.
+- Pejabat hanya dapat membuka pengajuan yang ditujukan kepadanya, dan pemohon hanya miliknya sendiri (selain itu 404).
+- Halaman publik tidak menampilkan data pribadi (NIK, KK, alamat, username).
+- Validasi pada semua formulir, termasuk pengecekan jadwal bentrok.
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Cara menjalankan
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+1. Salin `.env.example` menjadi `.env`, lalu isi koneksi database (`DB_DATABASE=visitor`, dan seterusnya).
+2. Buat database `visitor`, lalu impor `database/sql/visitor_terbaru.sql`.
+3. Pasang dependensi dan kunci aplikasi:
+   ```
+   composer install
+   php artisan key:generate
+   ```
+4. (Opsional) Isi data contoh:
+   ```
+   php artisan db:seed --class=DemoSeeder
+   ```
+5. Jalankan:
+   ```
+   php artisan serve
+   ```
+   Buka `http://127.0.0.1:8000`.
 
-## Agentic Development
+> Database dibuat dari berkas SQL, jadi `php artisan migrate` **tidak** dipakai.
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Akun contoh (data palsu, dari DemoSeeder)
 
-```bash
-composer require laravel/boost --dev
+| Peran | Login | Password |
+|---|---|---|
+| Pejabat | `budi` | `budi123` |
+| Pejabat | `siti` | `siti123` |
+| Pejabat | `andi` | `andi123` |
+| Pemohon | `pemohon.demo@contoh.test` | `demo12345` |
 
-php artisan boost:install
+Akun admin dibuat sendiri dan tidak dicantumkan di sini.
+
+## Struktur kode yang penting
+
 ```
-
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+app/Models/                         Model + scope query (Kunjungan, SettingsKunjungan, JabatanPenduduk, ...)
+app/Http/Controllers/Admin/         Halaman admin
+app/Http/Controllers/Penduduk/      Halaman pejabat
+app/Http/Controllers/Pemohon/       Halaman pemohon
+app/Http/Controllers/PublikController.php   Halaman publik
+app/Http/Middleware/EnsureUserHasRole.php   Pembatas akses per peran
+database/sql/visitor_terbaru.sql    Struktur dan data database
+database/seeders/DemoSeeder.php     Data contoh
+routes/web.php                      Seluruh route
+```

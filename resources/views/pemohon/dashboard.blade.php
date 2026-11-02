@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Dashboard Pemohon')
+
 @section('content')
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -10,11 +12,15 @@
     @if (session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
+    @if (session('peringatan'))
+        <div class="alert alert-danger">{{ session('peringatan') }}</div>
+    @endif
 
     <div class="card shadow-sm">
         <div class="card-header bg-white fw-bold">Riwayat Pengajuan Kunjungan</div>
         <div class="card-body p-0">
-            <table class="table table-hover mb-0">
+            <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
                 <thead class="table-light">
                     <tr>
                         <th>#</th>
@@ -23,6 +29,7 @@
                         <th>Tujuan</th>
                         <th>Status</th>
                         <th>Catatan</th>
+                        <th style="width:150px">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -61,14 +68,29 @@
                                     -
                                 @endif
                             </td>
+                            <td>
+                                @if ($item->bisaDiubah())
+                                    <a href="{{ route('pemohon.pengajuan.edit', $item->id_kunjungan) }}" class="btn btn-sm btn-warning">Ubah</a>
+                                    <form method="POST" action="{{ route('pemohon.pengajuan.destroy', $item->id_kunjungan) }}"
+                                          class="d-inline"
+                                          onsubmit="return confirm('Yakin ingin menghapus pengajuan ini?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
+                                    </form>
+                                @else
+                                    <span class="text-muted small">Sudah diproses</span>
+                                @endif
+                            </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="text-center py-3 text-muted">Belum ada pengajuan kunjungan.</td>
+                            <td colspan="7" class="text-center py-3 text-muted">Belum ada pengajuan kunjungan.</td>
                         </tr>
                     @endforelse
                 </tbody>
             </table>
+            </div>
         </div>
     </div>
 

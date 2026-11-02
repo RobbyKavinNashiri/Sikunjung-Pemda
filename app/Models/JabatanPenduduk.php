@@ -31,4 +31,18 @@ class JabatanPenduduk extends Model
     {
         return $this->hasMany(SettingsKegiatan::class, 'id_jabatan_penduduk', 'id_jabatan_penduduk');
     }
+
+    // ---------- Scope ----------
+
+    /** Jabatan yang sedang dipegang (status Y). */
+    public function scopeAktif($query)
+    {
+        return $query->where('status', 'Y');
+    }
+
+    /** Jabatan milik satu penduduk. */
+    public function scopeMilikPenduduk($query, $idPenduduk)
+    {
+        return $query->where('id_penduduk', $idPenduduk);
+    }
 }

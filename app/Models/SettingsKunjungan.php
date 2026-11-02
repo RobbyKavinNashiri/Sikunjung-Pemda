@@ -25,4 +25,24 @@ class SettingsKunjungan extends Model
     {
         return $this->hasMany(Kunjungan::class, 'id_settings_kunjungan', 'id_settings_kunjungan');
     }
+
+    // ---------- Scope ----------
+
+    /** Jadwal yang dibuka (status Y). */
+    public function scopeAktif($query)
+    {
+        return $query->where('status', 'Y');
+    }
+
+    /** Jadwal hari ini dan seterusnya. */
+    public function scopeMendatang($query)
+    {
+        return $query->whereDate('tanggal', '>=', now()->toDateString());
+    }
+
+    /** Jadwal milik satu pejabat. */
+    public function scopeMilikPejabat($query, $idPenduduk)
+    {
+        return $query->whereHas('jabatanPenduduk', fn ($q) => $q->where('id_penduduk', $idPenduduk));
+    }
 }

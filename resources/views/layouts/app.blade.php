@@ -11,9 +11,10 @@
 @php
     $penduduk = Auth::guard('penduduk')->user();
     $pemohon = Auth::guard('pemohon')->user();
+    $aktif = fn (string $pola) => request()->routeIs($pola) ? 'active' : '';
 @endphp
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<nav class="navbar navbar-expand-xl navbar-dark bg-primary">
     <div class="container">
         <a class="navbar-brand" href="{{ url('/') }}">{{ config('app.name') }}</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuUtama">
@@ -22,25 +23,32 @@
 
         <div class="collapse navbar-collapse" id="menuUtama">
             <ul class="navbar-nav me-auto">
-                <li class="nav-item"><a class="nav-link" href="{{ url('/') }}">Beranda</a></li>
+                <li class="nav-item"><a class="nav-link {{ $aktif('beranda') }}" href="{{ url('/') }}">Beranda</a></li>
 
                 @if ($penduduk && $penduduk->status === 'Admin')
-                    <li class="nav-item"><a class="nav-link" href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('admin.jabatan.index') }}">Jabatan</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('admin.penduduk.index') }}">Penduduk</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('admin.jabatan-penduduk.index') }}">Jabatan Pegawai</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('admin.kunjungan.index') }}">Pengajuan</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('admin.settings-kunjungan.index') }}">Jadwal Kunjungan</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('admin.settings-kegiatan.index') }}">Kegiatan</a></li>
+                    <li class="nav-item"><a class="nav-link {{ $aktif('admin.dashboard') }}" href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link {{ $aktif('admin.kunjungan.*') }}" href="{{ route('admin.kunjungan.index') }}">Pengajuan</a></li>
+                    <li class="nav-item"><a class="nav-link {{ $aktif('admin.jabatan.*') }}" href="{{ route('admin.jabatan.index') }}">Jabatan</a></li>
+                    <li class="nav-item"><a class="nav-link {{ $aktif('admin.penduduk.*') }}" href="{{ route('admin.penduduk.index') }}">Penduduk</a></li>
+                    <li class="nav-item"><a class="nav-link {{ $aktif('admin.jabatan-penduduk.*') }}" href="{{ route('admin.jabatan-penduduk.index') }}">Jabatan Pegawai</a></li>
+                    <li class="nav-item"><a class="nav-link {{ $aktif('admin.settings-kunjungan.*') }}" href="{{ route('admin.settings-kunjungan.index') }}">Jadwal Kunjungan</a></li>
+                    <li class="nav-item"><a class="nav-link {{ $aktif('admin.settings-kegiatan.*') }}" href="{{ route('admin.settings-kegiatan.index') }}">Kegiatan</a></li>
                 @elseif ($penduduk)
-                    <li class="nav-item"><a class="nav-link" href="{{ route('penduduk.dashboard') }}">Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('penduduk.kunjungan.index') }}">Pengajuan</a></li>
+                    <li class="nav-item"><a class="nav-link {{ $aktif('penduduk.dashboard') }}" href="{{ route('penduduk.dashboard') }}">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link {{ $aktif('penduduk.kunjungan.*') }}" href="{{ route('penduduk.kunjungan.index') }}">Pengajuan</a></li>
+                    <li class="nav-item"><a class="nav-link {{ $aktif('penduduk.jadwal.*') }}" href="{{ route('penduduk.jadwal.index') }}">Jadwal Saya</a></li>
+                    <li class="nav-item"><a class="nav-link {{ $aktif('penduduk.kegiatan.*') }}" href="{{ route('penduduk.kegiatan.index') }}">Kegiatan Saya</a></li>
                 @elseif ($pemohon)
-                    <li class="nav-item"><a class="nav-link" href="{{ route('pemohon.dashboard') }}">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link {{ $aktif('pemohon.*') }}" href="{{ route('pemohon.dashboard') }}">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link {{ $aktif('publik.jadwal') }}" href="{{ route('publik.jadwal') }}">Jadwal</a></li>
+                    <li class="nav-item"><a class="nav-link {{ $aktif('publik.struktur') }}" href="{{ route('publik.struktur') }}">Struktur</a></li>
+                @else
+                    <li class="nav-item"><a class="nav-link {{ $aktif('publik.jadwal') }}" href="{{ route('publik.jadwal') }}">Jadwal</a></li>
+                    <li class="nav-item"><a class="nav-link {{ $aktif('publik.struktur') }}" href="{{ route('publik.struktur') }}">Struktur</a></li>
                 @endif
             </ul>
 
-            <ul class="navbar-nav">
+            <ul class="navbar-nav align-items-xl-center">
                 @if ($penduduk || $pemohon)
                     <li class="nav-item"><span class="navbar-text me-3">
                         {{ $penduduk ? $penduduk->nama_penduduk : $pemohon->nama }}
