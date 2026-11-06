@@ -1,0 +1,11 @@
+[33mcommit ac41398cf6c1da4d1eafba14fd56deb561d5ab39[m
+Author: RobbyKavinNashiri <robby.kavin.student@unuja.ac.id>
+Date:   Tue Nov 3 06:12:05 2026 +0700
+
+    Pasang Bootstrap lokal agar tampilan tidak bergantung internet
+
+ public/vendor/bootstrap/css/bootstrap.min.css      | 6 [32m++++++[m
+ public/vendor/bootstrap/js/bootstrap.bundle.min.js | 7 [32m+++++++[m
+ resources/views/layouts/app.blade.php              | 4 [32m++[m[31m--[m
+ resources/views/layouts/guest.blade.php            | 4 [32m++[m[31m--[m
+ 4 files changed, 17 insertions(+), 4 deletions(-)
